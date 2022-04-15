@@ -146,4 +146,28 @@ class EmployeeRepositoryTest {
         // then
         assertThat(deletedEmployeeOptional).isEmpty();
     }
+
+    @Test
+    void JPQLTest() {
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d45")
+                .firstName("sg45")
+                .email("ehtjd34@gmail.com")
+                .build();
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        String firstName = "d45";
+        String lastName = "sg45";
+
+        // when
+        // 반환값은 List로! 단순 엔티티 반환안됨!
+        List<Employee> byJPQLIndex = employeeRepository.findByJPQLIndex(firstName, lastName);
+        List<Employee> byJPQL = employeeRepository.findByJPQL(firstName, lastName);
+
+        // then
+        assertThat(byJPQLIndex).isNotNull();
+        assertThat(byJPQL).isNotNull();
+    }
 }
