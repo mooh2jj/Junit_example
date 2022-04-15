@@ -170,4 +170,28 @@ class EmployeeRepositoryTest {
         assertThat(byJPQLIndex).isNotNull();
         assertThat(byJPQL).isNotNull();
     }
+
+    @Test
+    void NativeQueryTest() {
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d45")
+                .firstName("sg45")
+                .email("ehtjd34@gmail.com")
+                .build();
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        String firstName = "d45";
+        String lastName = "sg45";
+
+        // when
+        // 반환값은 List로! 단순 엔티티 반환안됨!
+        Employee byNativeQuery = employeeRepository.findByNativeQuery();
+//        List<Employee> byNativeQuery = employeeRepository.findByNativeQuery(firstName, lastName);
+
+        // then
+        assertThat(byNativeQuery).isNotNull();
+//        assertThat(byJPQL).isNotNull();
+    }
 }
