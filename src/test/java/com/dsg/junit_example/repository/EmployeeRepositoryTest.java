@@ -82,4 +82,22 @@ class EmployeeRepositoryTest {
         assertThat(employee1).isNotNull();
 
     }
+
+    @Test
+    void getByEmail() {
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d4")
+                .firstName("sg4")
+                .email("ehtjd34@gmail.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        // when
+        Employee employee1 = employeeRepository.findByEmail(employee.getEmail()).get();
+
+        // then
+        assertThat(employee1).isNotNull();
+    }
 }
