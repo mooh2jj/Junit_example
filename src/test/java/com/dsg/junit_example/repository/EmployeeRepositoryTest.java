@@ -100,4 +100,29 @@ class EmployeeRepositoryTest {
         // then
         assertThat(employee1).isNotNull();
     }
+
+    @Test
+    void updateTest() {
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d4")
+                .firstName("sg4")
+                .email("ehtjd34@gmail.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        // when
+        Employee savedEmployee = employeeRepository.findById(employee.getId()).get();
+        savedEmployee.setEmail("rash@test.com");
+
+        Employee updatedEmployee = employeeRepository.save(savedEmployee);
+//        System.out.println("updatedEmployee: "+ updatedEmployee);
+//        Employee employee1 = employeeRepository.findByEmail(savedEmployee.getEmail()).get();
+        System.out.println("savedEmployee: "+ savedEmployee);
+//        System.out.println("employee1: "+ employee1);
+        // then
+        assertThat(updatedEmployee.getEmail()).isEqualTo("rash@test.com");
+
+    }
 }
