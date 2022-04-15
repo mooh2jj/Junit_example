@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -124,5 +125,25 @@ class EmployeeRepositoryTest {
         // then
         assertThat(updatedEmployee.getEmail()).isEqualTo("rash@test.com");
 
+    }
+
+    @Test
+    void deleteTest() {
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d4")
+                .firstName("sg4")
+                .email("ehtjd34@gmail.com")
+                .build();
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        // when
+        employeeRepository.deleteById(savedEmployee.getId());
+
+        Optional<Employee> deletedEmployeeOptional = employeeRepository.findById(savedEmployee.getId());
+
+        // then
+        assertThat(deletedEmployeeOptional).isEmpty();
     }
 }
