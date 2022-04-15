@@ -20,7 +20,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     // NativeQuery
     @Query(value = "select * from employees e", nativeQuery = true)
-    Employee findByNativeQuery();
+    List<Employee> findByNativeQuery();
 
     // 오류뜸
     @Query(value = "select * from employees e where e.firstName = ?1 and e.lastName = ?2", nativeQuery = true)

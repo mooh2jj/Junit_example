@@ -1,6 +1,7 @@
 package com.dsg.junit_example.repository;
 
 import com.dsg.junit_example.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,14 +19,25 @@ class EmployeeRepositoryTest {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Test
-    void saveTest() {
-        // given
-        Employee employee = Employee.builder()
-                .lastName("d")
+    Employee employee;
+
+    @BeforeEach
+    void setup() {
+        employee = Employee.builder()
+                .lastName("ddd")
                 .firstName("sg")
                 .email("ehtjd33@gmail.com")
                 .build();
+    }
+
+    @Test
+    void saveTest() {
+        // given
+//        Employee employee = Employee.builder()
+//                .lastName("d")
+//                .firstName("sg")
+//                .email("ehtjd33@gmail.com")
+//                .build();
 
         // when
         Employee savedEmployee = employeeRepository.save(employee);
@@ -40,11 +52,11 @@ class EmployeeRepositoryTest {
     @Test
     void getAllTest() {
         // given
-        Employee employee1 = Employee.builder()
-                .lastName("dg")
-                .firstName("sgg")
-                .email("sgg@gmail.com")
-                .build();
+//        Employee employee1 = Employee.builder()
+//                .lastName("dg")
+//                .firstName("sgg")
+//                .email("sgg@gmail.com")
+//                .build();
 
         Employee employee2 = Employee.builder()
                 .lastName("dg22")
@@ -52,7 +64,7 @@ class EmployeeRepositoryTest {
                 .email("sgg22@gmail.com")
                 .build();
 
-        employeeRepository.save(employee1);
+        employeeRepository.save(employee);
         employeeRepository.save(employee2);
 
         // when
@@ -61,18 +73,18 @@ class EmployeeRepositoryTest {
         // then
 //        System.out.println("empoyees: "+ employees.toString());
         assertThat(employees).isNotNull();
-        assertThat(employees.size()).isEqualTo(3);
+        assertThat(employees.size()).isEqualTo(5);
     }
 
     @Test
     void getById() {
 
         // given
-        Employee employee = Employee.builder()
-                .lastName("d")
-                .firstName("sg")
-                .email("ehtjd33@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d")
+//                .firstName("sg")
+//                .email("ehtjd33@gmail.com")
+//                .build();
 
         employeeRepository.save(employee);
 
@@ -87,16 +99,16 @@ class EmployeeRepositoryTest {
     @Test
     void getByEmail() {
         // given
-        Employee employee = Employee.builder()
-                .lastName("d4")
-                .firstName("sg4")
-                .email("ehtjd34@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d4")
+//                .firstName("sg4")
+//                .email("ehtjd34@gmail.com")
+//                .build();
 
         employeeRepository.save(employee);
 
         // when
-        Employee employee1 = employeeRepository.findByEmail(employee.getEmail()).get();
+        Employee employee1 = employeeRepository.findByEmail("rash@test.com").get();
 
         // then
         assertThat(employee1).isNotNull();
@@ -105,11 +117,11 @@ class EmployeeRepositoryTest {
     @Test
     void updateTest() {
         // given
-        Employee employee = Employee.builder()
-                .lastName("d4")
-                .firstName("sg4")
-                .email("ehtjd34@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d4")
+//                .firstName("sg4")
+//                .email("ehtjd34@gmail.com")
+//                .build();
 
         employeeRepository.save(employee);
 
@@ -130,11 +142,11 @@ class EmployeeRepositoryTest {
     @Test
     void deleteTest() {
         // given
-        Employee employee = Employee.builder()
-                .lastName("d4")
-                .firstName("sg4")
-                .email("ehtjd34@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d4")
+//                .firstName("sg4")
+//                .email("ehtjd34@gmail.com")
+//                .build();
 
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -150,16 +162,16 @@ class EmployeeRepositoryTest {
     @Test
     void JPQLTest() {
         // given
-        Employee employee = Employee.builder()
-                .lastName("d45")
-                .firstName("sg45")
-                .email("ehtjd34@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d45")
+//                .firstName("sg45")
+//                .email("ehtjd34@gmail.com")
+//                .build();
 
         Employee savedEmployee = employeeRepository.save(employee);
 
-        String firstName = "d45";
-        String lastName = "sg45";
+        String firstName = "ddd";
+        String lastName = "sg";
 
         // when
         // 반환값은 List로! 단순 엔티티 반환안됨!
@@ -174,24 +186,23 @@ class EmployeeRepositoryTest {
     @Test
     void NativeQueryTest() {
         // given
-        Employee employee = Employee.builder()
-                .lastName("d45")
-                .firstName("sg45")
-                .email("ehtjd34@gmail.com")
-                .build();
+//        Employee employee = Employee.builder()
+//                .lastName("d45")
+//                .firstName("sg45")
+//                .email("ehtjd34@gmail.com")
+//                .build();
 
         Employee savedEmployee = employeeRepository.save(employee);
 
-        String firstName = "d45";
-        String lastName = "sg45";
+        String firstName = "ddd";
+        String lastName = "sg";
 
         // when
         // 반환값은 List로! 단순 엔티티 반환안됨!
-        Employee byNativeQuery = employeeRepository.findByNativeQuery();
+        List<Employee> byNativeQuery = employeeRepository.findByNativeQuery();
 //        List<Employee> byNativeQuery = employeeRepository.findByNativeQuery(firstName, lastName);
 
         // then
         assertThat(byNativeQuery).isNotNull();
-//        assertThat(byJPQL).isNotNull();
     }
 }
