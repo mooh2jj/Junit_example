@@ -37,7 +37,7 @@ class EmployeeRepositoryTest {
     }
 
     @Test
-    void getTest() {
+    void getAllTest() {
         // given
         Employee employee1 = Employee.builder()
                 .lastName("dg")
@@ -61,5 +61,25 @@ class EmployeeRepositoryTest {
 //        System.out.println("empoyees: "+ employees.toString());
         assertThat(employees).isNotNull();
         assertThat(employees.size()).isEqualTo(3);
+    }
+
+    @Test
+    void getById() {
+
+        // given
+        Employee employee = Employee.builder()
+                .lastName("d")
+                .firstName("sg")
+                .email("ehtjd33@gmail.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        // when
+        Employee employee1 = employeeRepository.findById(employee.getId()).get();
+
+        // then
+        assertThat(employee1).isNotNull();
+
     }
 }
