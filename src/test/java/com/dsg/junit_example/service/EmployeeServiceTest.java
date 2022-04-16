@@ -145,5 +145,20 @@ class EmployeeServiceTest {
 
     }
 
+    @Test
+    public void given_when_thenUpdate(){
+        // given - precondition or setup
+        given(employeeRepository.save(employee)).willReturn(employee);
+        employee.setEmail("kmv@test.com");
+        employee.setFirstName("kkk");
+        // when - action or the behaviour that we are going test
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+
+        // then - verify the output
+        assertThat(updatedEmployee.getEmail()).isEqualTo("kmv@test.com");
+        assertThat(updatedEmployee.getFirstName()).isEqualTo("kkk");
+
+    }
+
 
 }

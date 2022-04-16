@@ -43,4 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("error"));
     }
+
+    @Override
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 }
