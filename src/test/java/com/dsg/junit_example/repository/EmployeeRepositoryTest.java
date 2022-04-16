@@ -13,7 +13,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-//@Rollback(value = false)
 class EmployeeRepositoryTest {
 
     @Autowired
@@ -130,12 +129,12 @@ class EmployeeRepositoryTest {
         savedEmployee.setEmail("rash@test.com");
 
         Employee updatedEmployee = employeeRepository.save(savedEmployee);
-//        System.out.println("updatedEmployee: "+ updatedEmployee);
-//        Employee employee1 = employeeRepository.findByEmail(savedEmployee.getEmail()).get();
+        System.out.println("updatedEmployee: "+ updatedEmployee);
+        Employee employee1 = employeeRepository.findByEmail(savedEmployee.getEmail()).get();
         System.out.println("savedEmployee: "+ savedEmployee);
-//        System.out.println("employee1: "+ employee1);
+        System.out.println("employee1: "+ employee1);
         // then
-        assertThat(updatedEmployee.getEmail()).isEqualTo("rash@test.com");
+//        assertThat(updatedEmployee.getEmail()).isEqualTo("rash@test.com");
 
     }
 
