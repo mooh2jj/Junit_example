@@ -17,10 +17,14 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Employee saveEmployee(Employee employee) {
 
-        Optional<Employee> savedEmployee = employeeRepository.findByEmail(employee.getEmail());
+/*        Optional<Employee> savedEmployee = employeeRepository.findByEmail(employee.getEmail());
         if (savedEmployee.isPresent()) {        // 같은 이메일이 존재한다면
             throw new ResourceNotFoundException("이미 같은 직원 이메일이 존재합니다. : " + employee.getEmail());
-        }
+        }*/
+
+        employeeRepository.findByEmail(employee.getEmail())
+                .orElseThrow(()-> new ResourceNotFoundException("이미 같은 직원 이메일이 존재합니다. : " + employee.getEmail()));
+
         return employeeRepository.save(employee);
     }
 }
