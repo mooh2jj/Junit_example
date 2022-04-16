@@ -2,6 +2,7 @@ package com.dsg.junit_example.repository;
 
 import com.dsg.junit_example.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +31,7 @@ class EmployeeRepositoryTest {
     }
 
     @Test
+    @Order(1)
     void saveTest() {
         // given
 //        Employee employee = Employee.builder()
