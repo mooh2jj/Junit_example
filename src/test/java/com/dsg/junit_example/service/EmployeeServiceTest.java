@@ -19,8 +19,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
@@ -157,6 +157,20 @@ class EmployeeServiceTest {
         // then - verify the output
         assertThat(updatedEmployee.getEmail()).isEqualTo("kmv@test.com");
         assertThat(updatedEmployee.getFirstName()).isEqualTo("kkk");
+
+    }
+
+    @Test
+    public void given_when_thenDeleteById(){
+        // given - precondition or setup
+        Long employeeId = 1L;
+
+        willDoNothing().given(employeeRepository).deleteById(employeeId);
+        // when - action or the behaviour that we are going test
+        employeeService.deleteEmployee(employeeId);
+
+        // then - verify the output
+        verify(employeeRepository, times(1)).deleteById(employeeId);
 
     }
 
