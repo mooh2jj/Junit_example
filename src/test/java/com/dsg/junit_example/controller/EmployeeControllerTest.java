@@ -110,5 +110,28 @@ class EmployeeControllerTest {
 
     }
 
+    @Test
+    public void given_when_thenGetById_Negative() throws Exception {
+        // given - precondition or setup
+        Long empolyeeId = 1L;
+        Employee employee = Employee.builder()
+                .id(1L)
+                .firstName("golang")
+                .lastName("do")
+                .email("do@test.com")
+                .build();
+
+        given(employeeService.getEmployeeById(empolyeeId)).willReturn(Optional.empty());
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/employees/{id}", empolyeeId));
+
+        // then - verify the output
+        response
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+    }
+
 
 }
