@@ -12,6 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -62,5 +66,24 @@ public class EmployeeControllerITests {
                         CoreMatchers.is(employee.getLastName())))
                 .andExpect(jsonPath("$.email",
                         CoreMatchers.is(employee.getEmail())));
+    }
+
+    @Test
+    public void given_when_thenGetAll() throws Exception {
+        // given - precondition or setup
+        List<Employee> listOfEmployees = new ArrayList<>();
+        listOfEmployees.add(Employee.builder().firstName("fgh").lastName("fo").email("fog@test.com").build());
+        listOfEmployees.add(Employee.builder().firstName("tony").lastName("stark").email("tony@test.com").build());
+        employeeRepository.saveAll(listOfEmployees);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get("/api/employees"));
+
+        // then - verify the output
+        response
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()",
+                        CoreMatchers.is(listOfEmployees.size())));
     }
 }
