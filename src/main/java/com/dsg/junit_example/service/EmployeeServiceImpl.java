@@ -4,6 +4,7 @@ import com.dsg.junit_example.exception.ResourceNotFoundException;
 import com.dsg.junit_example.model.Employee;
 import com.dsg.junit_example.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +60,20 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Employee> updateEmployee(Employee employee, Long employeeId) {
+
+        return this.getEmployeeById(employeeId)
+                .map(savedEmployee -> {
+                    savedEmployee.setFirstName(employee.getFirstName());
+                    savedEmployee.setLastName(employee.getLastName());
+                    savedEmployee.setEmail(employee.getEmail());
+
+                    Employee updatedEmployee = employeeRepository.save(savedEmployee);
+                    return updatedEmployee;
+                });
+
     }
 }
