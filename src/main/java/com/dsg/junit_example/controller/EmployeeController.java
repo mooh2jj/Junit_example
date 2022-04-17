@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -38,10 +39,25 @@ public class EmployeeController {
     public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId,
                                                    @RequestBody Employee employee) {
         return employeeService.getEmployeeById(employeeId)
-                .map(savedEmployee -> {
+                .map(getEmployee -> {
                     Employee updateEmployee = employeeService.updateEmployee(employee);
                     return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+//    @PutMapping("{id}")
+//    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId,
+//                                                   @RequestBody Employee employee) {
+//        return employeeService.updateEmployee(employee, employeeId)
+//                .map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeId) {
+        employeeService.deleteEmployee(employeeId);
+
+        return new ResponseEntity<>("Employee deleted!", HttpStatus.OK);
     }
 }
