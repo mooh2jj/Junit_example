@@ -4,7 +4,9 @@ import com.dsg.junit_example.exception.ResourceNotFoundException;
 import com.dsg.junit_example.model.Employee;
 import com.dsg.junit_example.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Optional<Employee> getEmployeeById(Long id) {
         return employeeRepository.findById(id);
-//        return employeeRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("error"));
+
     }
 
     @Override
@@ -53,6 +54,17 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Employee> updateEmployee(Employee employee, Long employeeId) {
+        Employee getEmployee = this.getEmployeeById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        getEmployee.setFirstName(employee.getFirstName());
+        getEmployee.setLastName(employee.getLastName());
+        getEmployee.setEmail(employee.getEmail());
+
+        return Optional.of(employeeRepository.save(getEmployee));
     }
 
 }

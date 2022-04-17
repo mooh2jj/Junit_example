@@ -35,27 +35,27 @@ public class EmployeeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId,
-                                                   @RequestBody Employee employee) {
-        return employeeService.getEmployeeById(employeeId)
-                .map(getEmployee -> {
-                    getEmployee.setFirstName(employee.getFirstName());
-                    getEmployee.setLastName(employee.getLastName());
-                    getEmployee.setEmail(employee.getEmail());
-                    Employee updateEmployee = employeeService.updateEmployee(getEmployee);
-                    return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
 //    @PutMapping("{id}")
 //    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId,
 //                                                   @RequestBody Employee employee) {
-//        return employeeService.updateEmployee(employee, employeeId)
-//                .map(ResponseEntity::ok)
+//        return employeeService.getEmployeeById(employeeId)
+//                .map(getEmployee -> {
+//                    getEmployee.setFirstName(employee.getFirstName());
+//                    getEmployee.setLastName(employee.getLastName());
+//                    getEmployee.setEmail(employee.getEmail());
+//                    Employee updateEmployee = employeeService.updateEmployee(getEmployee);
+//                    return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
+//                })
 //                .orElseGet(() -> ResponseEntity.notFound().build());
 //    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long employeeId,
+                                                   @RequestBody Employee employee) {
+        return employeeService.updateEmployee(employee, employeeId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeId) {
