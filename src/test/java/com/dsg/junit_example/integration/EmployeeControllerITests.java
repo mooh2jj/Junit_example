@@ -16,9 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,5 +86,50 @@ public class EmployeeControllerITests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()",
                         CoreMatchers.is(listOfEmployees.size())));
+    }
+
+    @Test
+    public void given_when_thenGetById() throws Exception {
+        // given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("golang")
+                .lastName("do")
+                .email("do@test.com")
+                .build();
+        employeeRepository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/employees/{id}", employee.getId()));
+
+        // then - verify the output
+        response
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", CoreMatchers.is(employee.getFirstName())))
+                .andExpect(jsonPath("$.lastName", CoreMatchers.is(employee.getLastName())))
+                .andExpect(jsonPath("$.email", CoreMatchers.is(employee.getEmail())));
+
+    }
+
+    @Test
+    public void given_when_thenGetById_Negative() throws Exception {
+        // given - precondition or setup
+        Long employeeId = 1L;
+        Employee employee = Employee.builder()
+                .firstName("golang")
+                .lastName("do")
+                .email("do@test.com")
+                .build();
+
+        employeeRepository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/employees/{id}", employeeId));
+
+        // then - verify the output
+        response
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
     }
 }
