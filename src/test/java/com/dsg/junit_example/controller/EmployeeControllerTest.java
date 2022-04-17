@@ -2,6 +2,7 @@ package com.dsg.junit_example.controller;
 
 import com.dsg.junit_example.model.Employee;
 import com.dsg.junit_example.service.EmployeeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -130,6 +130,40 @@ class EmployeeControllerTest {
         response
                 .andDo(print())
                 .andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void given_when_thenUpdate() throws Exception {
+        // given - precondition or setup
+        long employeeId = 1L;
+        Employee savedEmployee = Employee.builder()
+                .firstName("Ramesh")
+                .lastName("Fadatare")
+                .email("ramesh@gmail.com")
+                .build();
+
+        Employee updatedEmployee = Employee.builder()
+                .firstName("Ram")
+                .lastName("Jadhav")
+                .email("ram@gmail.com")
+                .build();
+        given(employeeService.getEmployeeById(employeeId)).willReturn(Optional.of(savedEmployee));
+        given(employeeService.updateEmployee(any(Employee.class)))
+                .willAnswer((invocation)-> invocation.getArgument(0));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/api/employees/{id}", employeeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedEmployee)));
+
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.firstName", CoreMatchers.is(updatedEmployee.getFirstName())))
+                .andExpect(jsonPath("$.lastName", CoreMatchers.is(updatedEmployee.getLastName())))
+                .andExpect(jsonPath("$.email", CoreMatchers.is(updatedEmployee.getEmail())));
 
     }
 
