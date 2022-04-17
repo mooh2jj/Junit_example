@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class EmployeeRepositoryTest {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class EmployeeRepositoryIT {
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -30,7 +32,6 @@ class EmployeeRepositoryTest {
     }
 
     @Test
-    @Order(1)
     void saveTest() {
         // given
 //        Employee employee = Employee.builder()
@@ -73,7 +74,7 @@ class EmployeeRepositoryTest {
         // then
 //        System.out.println("empoyees: "+ employees.toString());
         assertThat(employees).isNotNull();
-        assertThat(employees.size()).isEqualTo(5);
+        assertThat(employees.size()).isEqualTo(2);
     }
 
     @Test
