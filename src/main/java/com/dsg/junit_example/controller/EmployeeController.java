@@ -4,6 +4,7 @@ import com.dsg.junit_example.model.Employee;
 import com.dsg.junit_example.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +25,12 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long employeeId) {
+        return employeeService.getEmployeeById(employeeId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
