@@ -40,7 +40,10 @@ public class EmployeeController {
                                                    @RequestBody Employee employee) {
         return employeeService.getEmployeeById(employeeId)
                 .map(getEmployee -> {
-                    Employee updateEmployee = employeeService.updateEmployee(employee);
+                    getEmployee.setFirstName(employee.getFirstName());
+                    getEmployee.setLastName(employee.getLastName());
+                    getEmployee.setEmail(employee.getEmail());
+                    Employee updateEmployee = employeeService.updateEmployee(getEmployee);
                     return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
